@@ -1,0 +1,15 @@
+for (int i = sheet.getLastRowNum(); i > 0; i--) {
+            Row row = sheet.getRow(i);
+            if (row != null) {
+                sheet.removeRow(row);
+            }
+        }
+
+        // Save the changes to the Excel sheet
+        FileOutputStream out = new FileOutputStream(new File(filepath));
+        workbook.write(out);
+
+        // Close the resources
+        out.close();
+        file.close();
+        workbook.close();
