@@ -1,0 +1,22 @@
+public class ExcelTableDeleter {
+    public static void main(String[] args) throws Exception {
+        // Connect to the Excel sheet
+        String filepath = "path/to/excel/file.xlsx";
+        FileInputStream file = new FileInputStream(new File(filepath));
+        Workbook workbook = new XSSFWorkbook(file);
+        Sheet sheet = workbook.getSheetAt(0);
+
+        // Delete the table contents using QueryDSL
+        SQLTemplates templates = MySQLTemplates.builder().build();
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/mydatabase", "root", "mypassword");
+        SQLQueryFactory queryFactory = new SQLQueryFactory(templates, conn);
+        String tableName = "mytable";
+        queryFactory.delete(QTableFactory.create(tableName)).execute();
+
+        // Close the resources
+        queryFactory.close();
+        conn.close();
+        file.close();
+        workbook.close();
+    }
+}
